@@ -1,0 +1,23 @@
+Documentation
+
+	First, download the zip file called ZilingZhouFinalProject.zip and unzip it.
+	
+	The file called RedoxEquationBalancer-apk.apk is the Android application that can be run on android devices or an android emulator. Bluestacks (	http://www.bluestacks.com/) is a great one. All you need is to sign in with your google account, or create an account, and then open RedoxEquationBalancer-apk.apk using Bluestacks. On the upper right hand corner, there's a button called "All Apps". Upon clicking that button, Redox Equation Balancer should be an icon. Click on it to run the project. It may take 5 to 10 seconds to load.
+	
+	You can also test the application using this link http://jsfiddle.net/lingling7777/63Ep2/. The application runs in the lower right hand corner, but note that the button icons don't appear. 
+	
+	The application can also be tested in Chrome. Inside the ZilingZhouFinalProject folder, there is a file called index.html. Opening it with Chrome will allow you to run it in your browser.
+	
+	This application is meant to balance oxidation reduction reactions that take place in aqueous solution, and be able to show users the steps so that they can learn to balance such chemical equations on their own. It is geared towards high school chemistry students who want to learn how to balance redox equations and/or check their work on doing so. In case you are not at all inclined towards chemistry, http://chemistry.about.com/od/chemicalreactions/a/oxidation-reduction-reactions.htm is a great overview of oxidation reduction reactions.
+		
+	Input equation by typing in a reactant or product in the text box and setting the charge using the dropdown menu to its right. Choose corresponding button to display in equation. Choose whether to balance the equation directly or go through the solution step-by-step using the buttons below that. Clear the equation before inputting another.
+
+	Tips:
+
+	Do not input parentheses if there is an implied subscript of 1 after it.
+	
+	Do not input H2O or H+ ions as those are assumed to be part of the reaction.
+	Disclaimer: This application is not guaranteed to balance non-redox equations correctly. It will also not balance synthesis reactions, decomposition reactions, half reactions by themselves, reactions containing hydrogen peroxide, oxygen gas, or hydrogen gas. 
+	
+	If you have further questions as to how to use the application, though it is pretty self explanatory, take a look this short video tutorial http://youtu.be/whWjhoFMkLk.
+

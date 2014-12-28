@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+
+<!--
+index.html
+Computer Science 50
+Final Project - Reduction Oxidation Equation Balancer
+Ziling Zhou
+-->
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1"> 
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script> 
+		<script src="http://code.jquery.com/mobile/1.4.0-rc.1/jquery.mobile-1.4.0-rc.1.min.js"></script> 
+	
+		<script type="text/javascript" src="js/control.js"></script>
+		
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0-rc.1/jquery.mobile.structure-1.4.0-rc.1.min.css"/> 
+		<link rel="stylesheet" href="css/themetest.css"/>
+		<link rel="stylesheet" href="css/jquery.mobile.icons.min.css"/>
+		
+		<title>Redox Equation Balancer</title>
+	</head>
+	<body>
+		<div data-role="page" id="main">
+			<div data-role="header">
+					<h1>Main</h1>
+			</div>
+			
+			<div data-role="content">
+				<div id="unbalanced">
+						<h2>Unbalanced Equation: </h2>
+
+				</div>
+				<div class="ui-grid-a">
+					<div class="ui-block-a">
+						<form>
+							<input type="text" data-clear-btn="true" name="addsubstance" id="addsubstance" value="" placeholder="input substance">
+						</form>
+					</div>
+					<div class="ui-block-b">
+						<select name="setcharge" id="setcharge">
+							<option value="+4">+4</option>
+							<option value="+3">+3</option>
+							<option value="+2">+2</option>
+							<option value="+1">+1</option>
+							<option value="0">0</option>
+							<option value="-1">-1</option>
+							<option value="-2">-2</option>
+							<option value="-3">-3</option>
+							<option value="-4">-4</option>
+						</select>
+					</div>
+				</div>
+				<div class="ui-grid-b">
+					<div class="ui-block-a">
+						<button type="button" data-theme="c" data-icon="plus" id="addreactant">As Reactant</button>
+					</div>
+					<div class="ui-block-b">
+						<button type="button" data-theme="c" data-icon="plus" id="addproduct">As Product</button>
+					</div>
+					
+					<div class="ui-block-b"><a href="#help" data-rel="dialog" data-transition="pop">
+							<button type="button" data-theme="b">Help</button>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div data-role="footer" data-theme="a">
+				<div class="ui-grid-b">
+					<div class="ui-block-a">
+						<button type="button" data-theme="b" id="clear">Clear</button>
+					</div>
+					<div class="ui-block-b"><a href="#answer">
+							<button type="button" data-theme="c" id = "balanceeqn" >Balance</button>
+						</a>
+					</div>
+					<div class="ui-block-c"><a href="#step1">
+							<button type="button" data-theme="c" id="stepbystep" >Step-by-Step</button>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div data-role = "page"id = "help">
+			<div data-role="header">
+				<h1>Help</h1>
+			</div>
+				<p>Input equation by typing in a reactant or product in the text box and setting the charge using the dropdown menu to its right. 
+				Choose corresponding button to display in equation. Choose whether to balance the equation directly or go through the solution step-by-step using the buttons below that. 
+				Clear the equation before inputting another. </p>
+				<h2>Tips:</h2>
+				<p>Do not input parentheses if there is an implied subscript of 1 after it. </p>
+				<p>Do not input H2O or H+ ions as those are assumed to be part of the reaction. </p>
+				<p>Disclaimer: This application is not guaranteed to balance non-redox equations correctly. 
+				It will also not balance synthesis and decomposition reactions, or reactions containing hydrogen peroxide.</p>
+		
+		</div>
+		
+		
+		
+		<div data-role="page" id="step1">
+			<div data-role="header">
+					<h1>Step 1. </h1>
+
+				<p>Divide the reaction into two half reactions. See which elements repeat on the product side and the reactant side and put the compounds containing those elements in the same half reaction. In doing so, first consider elements that are not hydrogen or oxygen.</p>
+			</div>
+			<div data-role="content">
+				<ul data-role="listview">
+					<li id="hr1">Half Reaction 1:</li>
+					<li id="hr2">Half Reaction 2:</li>
+				</ul>
+			</div>
+			<div data-role="footer" data-theme="b">
+				<fieldset class="ui-grid-a">
+					<div class="ui-block-a"><a href="#main">
+							<button type="submit" data-icon="home" data-theme="b">Home</button>
+						</a>
+
+					</div>
+					<div class="ui-block-b"><a href="#step2">
+							<button type="submit" data-icon="arrow-r" data-iconpos="right" data-theme="c">Next Step</button>
+						</a>
+
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		<div data-role="page" id="step2">
+			<div data-role="header" data-theme="a">
+					<h1>Step 2.</h2>
+					<p> Balance each half-reaction separately. </p>
+				</div>	
+				
+				<div data-role="content">
+					<div data-role="collapsible-set">
+						<div data-role="collapsible" data-mini="true">
+							<h3>Balance one half reaction.</h3>
+							<div data-role="collapsible-set">
+								<div data-role="collapsible" data-mini="true">
+									<h5>a) Ignore H's and O's and balance other elements.</h5>
+									<p id="halfrxn1a" ></p>
+								</div>
+								<div data-role="collapsible" data-mini="true">
+									<h5>b) Balance O's by adding H2O as needed.</h5>
+									<p id="halfrxn1b"></p>
+								</div>	
+								<div data-role="collapsible" data-mini="true">
+									<h5>c) Balance H's by adding H+ as needed.</h5>
+									<p id="halfrxn1c"></p>
+								</div>	
+								<div data-role="collapsible" data-mini="true">
+									<h5>d) Balance charge by adding e- as needed.</h5>
+									<p id="halfrxn1d"></p>
+								</div>	
+							</div>
+						</div>
+						<div data-role="collapsible" data-mini="true">
+							<h3>Balance the other. </h3>
+							<div data-role="collapsible-set">
+								<div data-role="collapsible" data-mini="true">
+									<h5>a) Ignore H and O elements and balance other elements.</h5>
+									<p id="halfrxn2a"></p>
+								</div>
+								<div data-role="collapsible" data-mini="true">
+									<h5>b) Balance O's by adding H2O as needed.</h5>
+									<p id="halfrxn2b"></p>
+								</div>	
+								<div data-role="collapsible" data-mini="true">
+									<h5>c) Balance H's by adding H+ as needed.</h5>
+									<p id="halfrxn2c"></p>
+								</div>	
+								<div data-role="collapsible" data-mini="true">
+									<h5>d) Balance charge by adding e- as needed.</h5>
+									<p id="halfrxn2d"></p>
+								</div>	
+							</div>
+						</div>
+					</div>
+				</div>
+			
+				<div data-role="footer" data-theme="b">
+					<fieldset class="ui-grid-b">
+						<div class="ui-block-a"><a href="#step1">
+							<button type="submit" data-icon="arrow-l" data-theme="c">Previous Step</button>
+						</a></div>
+						<div class="ui-block-b"><a href="#main">
+							<button type="submit" data-icon="home" data-theme="b">Home</button>
+						</a></div>
+						<div class="ui-block-c"><a href="#step3">
+							<button type="submit" data-icon="arrow-r" data-iconpos="right" data-theme="c">Next Step</button>
+						</a></div>
+					</fieldset>
+				</div>
+			</div>
+			
+			<div data-role="page" id="step3">
+				<div data-role="header" data-theme="a">
+					<h1>Step 3.</h1>
+					<p>Combine the half-reactions. </p>
+			</div>
+			<div data-role="content">
+				<p>a) Multiply half reactions by a constant if needed so that the number of electrons lost is equal to the number of electrons gained.</p>
+				<p id="multiply1"></p>
+				<p id="multiply2"></p>
+				<p>b) Then add the two reactions together and cancel terms as appropriate.</p>
+				<p id="cancel"></p>
+			</div>
+			<div data-role="footer" data-theme="b">
+				<fieldset class="ui-grid-b">
+					<div class="ui-block-a"><a href="#step2">
+							<button type="submit" data-icon="arrow-l" data-theme="c">Previous Step</button>
+						</a>
+
+					</div>
+					<div class="ui-block-b"><a href="#main">
+							<button type="submit" data-icon="home" data-theme="b">Home</button>
+						</a>
+
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		<div data-role="page" id="answer">
+			<div data-role="header">
+					<h1>Balanced Equation</h1>
+
+			</div>
+			<div data-role="content" id="balanced"></div>
+			<div data-role="footer" data-theme="b">	<a href="#main" data-role="button" data-icon="home">Home</a>
+
+			</div>
+		</div>
+	</body>		
+	
+</html>
+
+<script>
+/**
+ * control.js
+ * Computer Science 50
+ * Final Project - Reduction Oxidation Equation Balancer
+ * Ziling Zhou
+ **/
+
+
+// values to store info about unbalanced equation display
+var reactantside = $("#unbalanced").html();
+var productside = '';
+// stores reactants
+var rts = [];
+// keeps track of number of reactants
+var rctr = 0;
+// stores products
+var pts = [];
+// keeps track of number products
+var pctr = 0;
+// keeps track of repeats in elements
+var repeats = 0;
+
+// stores half reactions, attributes .pt and .rt, water, hydIon, elec
+var halfrxn = [new Object(), new Object()];
+
+// stores final reaction information
+var finalrxn = [];
+
+// keeps track of how many half reactions have been stored
+var hrctr = 0;
+
+// keeps track of left side and right side of final steps in balancing
+var left = "";
+var right = "";
+
+// stores the number of electrons that are exchanged in the reaction
+var totalElec;
+
+// checks if that equation has been balanced already
+var balanced = false;
+
+// listen for click on add as reactant button
+$("#addreactant").click(function (event) {
+    var isValid = validate($("#addsubstance").val());
+    if (isValid === true) {
+        addreactant();
+    }
+});
+
+// listen for click on add as product button
+$("#addproduct").click(function (event) {
+    var isValid = validate($("#addsubstance").val());
+    if (isValid === true) {
+        addproduct();
+    }
+});
+
+// listen for click on add as product button
+$("#clear").click(function (event) {
+    clearequation();
+});
+
+// listen for click on balance button
+$("#balanceeqn").click(function (event) {
+    if (balanced === false) {
+        // store equation as two arrays that each represent a half reaction
+        split();
+		
+		// store equations with coefficients in appropriate places
+		$("#halfrxn1a").html(dispcoeff(halfrxn[0].rt) + halfrxn[0].rt.name + " -> " + dispcoeff(halfrxn[0].pt) + halfrxn[0].pt.name);
+		$("#halfrxn2a").html(dispcoeff(halfrxn[1].rt) + halfrxn[1].rt.name + " -> " + dispcoeff(halfrxn[1].pt) + halfrxn[1].pt.name);
+		
+        // balance O's and H's and electrons
+        display(balanceO, halfrxn[0], "water", "H2O", "halfrxn1a", "halfrxn1b");
+        display(balanceO, halfrxn[1], "water", "H2O", "halfrxn2a", "halfrxn2b");
+        display(balanceH, halfrxn[0], "hydIon", "H[+]", "halfrxn1b", "halfrxn1c");
+        display(balanceH, halfrxn[1], "hydIon", "H[+]", "halfrxn2b", "halfrxn2c");
+        display(balanceElec, halfrxn[0], "elec", "e[-]", "halfrxn1c", "halfrxn1d");
+        display(balanceElec, halfrxn[1], "elec", "e[-]", "halfrxn2c", "halfrxn2d");
+
+        // display correct final coefficients for original products and reactants
+        matchElec(halfrxn[0], halfrxn[1]);
+        renderSides(cancelterms());
+    }
+    balanced = true;
+    $("#balanced").html(left + " -> " + right);
+});
+
+// listen for click on step-by-step solution button
+$("#stepbystep").click(function (event) {
+    if (balanced === false) {
+        // store the equation as two arrays
+        split();
+    }
+    // have the two equations appear on the step 1 page
+    $("#hr1").html("Half Reaction 1: " + halfrxn[0].rt.name + " -> " + halfrxn[0].pt.name);
+    $("#hr2").html("Half Reaction 2: " + halfrxn[1].rt.name + " -> " + halfrxn[1].pt.name);
+
+    // store equations with coefficients in appropriate places
+    $("#halfrxn1a").html(dispcoeff(halfrxn[0].rt) + halfrxn[0].rt.name + " -> " + dispcoeff(halfrxn[0].pt) + halfrxn[0].pt.name);
+    $("#halfrxn2a").html(dispcoeff(halfrxn[1].rt) + halfrxn[1].rt.name + " -> " + dispcoeff(halfrxn[1].pt) + halfrxn[1].pt.name);
+    if (balanced === false) {
+        // balance O's and H's and alter appropriate html text
+        display(balanceO, halfrxn[0], "water", "H2O", "halfrxn1a", "halfrxn1b");
+        display(balanceO, halfrxn[1], "water", "H2O", "halfrxn2a", "halfrxn2b");
+        display(balanceH, halfrxn[0], "hydIon", "H[+]", "halfrxn1b", "halfrxn1c");
+        display(balanceH, halfrxn[1], "hydIon", "H[+]", "halfrxn2b", "halfrxn2c");
+        display(balanceElec, halfrxn[0], "elec", "e[-]", "halfrxn1c", "halfrxn1d");
+        display(balanceElec, halfrxn[1], "elec", "e[-]", "halfrxn2c", "halfrxn2d");
+
+        // display correct final coefficients for pt and rt
+        matchElec(halfrxn[0], halfrxn[1]);
+    }
+    renderSides(halfrxn[0]);
+    $("#multiply1").html(left + " -> " + right);
+    renderSides(halfrxn[1]);
+    $("#multiply2").html(left + " -> " + right);
+    renderSides(cancelterms());
+
+    balanced = true;
+
+    $("#cancel").html(left + " -> " + right);
+});
+
+//add a reactant to unbalanced equation
+function addreactant() {
+	// stores number of repeated elements
+    repeats = 0;
+	// takes input from user 
+    var substance = $("#addsubstance").val();
+    var name = substance;
+    var charge = $("#setcharge").val();
+    substance += "[" + charge + "]";
+
+    // update unbalanced equation display
+    if (rctr == 0) {
+        reactantside = reactantside + substance;
+    } else {
+        reactantside += " + ";
+        reactantside += substance;
+    }
+    $("#unbalanced").html(reactantside + productside);
+    $("#addsubstance").val('');
+	
+    // creates new object in array for reactant
+    buildReactant(substance, charge);
+
+    // matches numbers and subscript separately
+    matches = name.match(/[A-Z][a-z]?[1-9]*/g);
+
+	// iterates through matches of elements
+	for (i = 0; i < matches.length; i++) {
+		// stores symbol and subscript separately
+        var ename = matches[i].match(/[a-zA-Z]+/g);
+        var subscript = matches[i].match(/[0-9]+/g);
+        
+		// check if element is inside parentheses, if so multiply subscript by value after parentheses 
+        var inParen = name.match(/\(([^)]+)\)/);
+		
+		// creates regular expression object for element to be tested
+        var testee = new RegExp(ename[0]);
+		// if element is inside parentheses, update subscript
+        if (inParen !== null) {
+            if (testee.test(inParen[1]) === true) {
+                // find outside subscript
+                var temp = name.match(/\)(.*)/);
+                var outScript = temp[1].match(/\d+/);
+                // update subscript
+                if (subscript !== null) {
+                    subscript[0] *= outScript[0];
+                } else {
+                    subscript = outScript;
+                }
+            }
+        }
+
+        // if element is a repeat, add info to previous element
+        if (isRepeat(ename[0], rts[rctr], subscript) == false) {
+            // build element with information about its name and subscript
+            buildElement(rts[rctr], ename, subscript, i - repeats);
+        }
+    }
+    rctr++;
+}
+
+//add a product to unbalanced equation
+function addproduct() {
+	// stores number of repeated elements
+    repeats = 0;
+	// stores input from user
+    var substance = $("#addsubstance").val();
+    var name = substance;
+    var charge = $("#setcharge").val();
+    substance += "[" + charge + "]";
+	// adds information to unbalanced equation display
+    if (pctr === 0) {
+        productside = productside + " -> ";
+        productside += substance;
+    } else {
+        productside += " + ";
+        productside += substance;
+    }
+    $("#unbalanced").html(reactantside + productside);
+    $("#addsubstance").val('');
+    
+	// creates object in array for product
+    buildProduct(substance, charge);
+	
+	// matches each element using regular expression
+    matches = name.match(/[A-Z][a-z]?[1-9]*/g);
+	
+	// checks if there are elements in parentheses
+    var inParen = name.match(/\(([^)]+)\)/);
+	
+	//iterates through matches of elements
+    for (i = 0; i < matches.length; i++) {
+		
+		// stores name and subscript of element separately
+        var ename = matches[i].match(/[a-zA-Z]+/g);
+        var subscript = matches[i].match(/[0-9]+/g);
+		
+        // if there are elements in parentheses, multiply subscript by value after parentheses 
+        if (inParen !== null) {
+			// stores element as regular expression to be tested
+            var testee = new RegExp(ename[0]);
+			// if element is inside parentheses
+            if (testee.test(inParen[1]) === true) {
+                // finds subscript after parentheses
+                var temp = name.match(/\)(.*)/);
+                var outScript = temp[1].match(/\d+/);
+                
+				// calculate and store new subscript if not null
+                if (subscript !== null) {
+                    subscript[0] *= outScript[0];
+                } else {
+                    subscript = outScript;
+                }
+            }
+        }
+		
+        // if element is a repeat, add info to previous element
+        if (isRepeat(ename[0], pts[pctr], subscript) == false) {
+		
+            // build element to store info outside of this function
+            buildElement(pts[pctr], ename, subscript, i - repeats);
+        }
+    }
+    pctr++;
+}
+
+// balance hydrogen in half reaction by adding H+
+function balanceH(rxn) {
+    var rtsH = 0;
+    var ptsH = 0;
+	
+	// finds Hs on reactant side
+    for (m = 0; m < rxn.rt.elems.length; m++) {
+        if (rxn.rt.elems[m].name == "H") {
+            rtsH = rxn.rt.elems[m].subscript;
+        }
+    }
+	
+	// finds Hs on product side
+    for (n = 0; n < rxn.pt.elems.length; n++) {
+        if (rxn.pt.elems[n].name == "H") {
+            ptsH = rxn.pt.elems[n].subscript;
+        }
+    }
+	
+	// finds Hs from water
+    if (rxn.water !== undefined) {
+        if (rxn.water.side == "pt") {
+            ptsH += (rxn.water.coeff * 2);
+        } else {
+            rtsH += (rxn.water.coeff * 2);
+        }
+    }
+	
+	// if there are equal Hs on both sides, nothing needs to be done
+    if (rtsH === ptsH) {
+        return false;
+    }
+
+    // else store information about H+ in half reactions
+    rxn.hydIon = new Object();
+    rxn.hydIon.coeff = Math.abs(ptsH - rtsH);
+    if (rtsH < ptsH) {
+        rxn.hydIon.side = "rt";
+    } else {
+        rxn.hydIon.side = "pt";
+    }
+    return true;
+}
+
+// balance oxygen in half reaction by adding H2O as needed
+function balanceO(rxn) {
+    var rtsO = 0;
+    var ptsO = 0;
+	
+	// find Os on reactant side
+    for (m = 0; m < rxn.rt.elems.length; m++) {
+        if (rxn.rt.elems[m].name == "O") {
+            rtsO = rxn.rt.elems[m].subscript;
+        }
+    }
+	// find Os on product side
+    for (n = 0; n < rxn.pt.elems.length; n++) {
+        if (rxn.pt.elems[n].name == "O") {
+            ptsO = rxn.pt.elems[n].subscript;
+        }
+    }
+	
+	// if same number on each side, do nothing
+    if (rtsO === ptsO) {
+        return false;
+    }
+
+    // else store information about H2O in half reactions
+    rxn.water = new Object();
+    rxn.water.coeff = Math.abs(ptsO - rtsO);
+    if (rtsO < ptsO) {
+        rxn.water.side = "rt";
+    } else {
+        rxn.water.side = "pt";
+    }
+    return true;
+}
+
+// balances charge in half reactions by adding electrons as needed
+function balanceElec(rxn) {
+    var rtsE = 0;
+    var ptsE = 0;
+	
+	// calculate charge from initial reactants
+    rtsE = parseInt(rxn.rt.charge) * parseInt(rxn.rt.coeff);
+    ptsE = parseInt(rxn.pt.charge) * parseInt(rxn.pt.coeff);
+
+	// find charge due to H+
+    if (rxn.hydIon !== undefined) {
+        if (rxn.hydIon.side == "pt") {
+            ptsE += (rxn.hydIon.coeff);
+        } else {
+            rtsE += (rxn.hydIon.coeff);
+        }
+    }
+	
+	// if charge is already balanced, do nothing
+    if (rtsE === ptsE) {
+        return false;
+        // also this means its not a redox equation
+    }
+
+    // store information about electrons in half reactions
+    rxn.elec = new Object();
+    rxn.elec.coeff = Math.abs(ptsE - rtsE);
+    if (rtsE < ptsE) {
+        rxn.elec.side = "pt";
+    } else {
+        rxn.elec.side = "rt";
+    }
+    return true;
+}
+
+// display coefficient only if it isn't 1
+function dispcoeff(substance) {
+    if (substance.coeff === 1) {
+        return "";
+    } else {
+        return substance.coeff;
+    }
+}
+
+// checks element is a repeat, stores it with previous object created for that, updates subscript
+function isRepeat(currentelem, compound, subscript) {
+	// iterates through previous elements of compound
+    for (j = i - 1 - repeats; j >= 0; j--) {
+        if (currentelem === compound.elems[j].name) {
+			// if subscript exists, add it to previous
+            if (subscript !== null) {
+                compound.elems[j].subscript += parseInt(subscript[0]);
+            } 
+			// else add 1
+			else {
+                compound.elems[j].subscript += 1;
+            }
+            repeats++;
+            return true;
+        }
+    }
+    return false;
+}
+
+// creates object in rts array that stores info about reactants
+function buildReactant(name, charge) {
+    rts[rctr] = new Object();
+    rts[rctr].name = name;
+    rts[rctr].charge = parseInt(charge);
+    rts[rctr].elems = [];
+}
+
+// creates object in pts array that stores info about products
+function buildProduct(name, charge) {
+    pts[pctr] = new Object();
+    pts[pctr].name = name;
+    pts[pctr].charge = parseInt(charge);
+    pts[pctr].elems = [];
+}
+// creates an object in elems array that stores info about a specific element
+function buildElement(compound, name, subscript, i) {
+    compound.elems[i] = new Object();
+    compound.elems[i].name = name[0];
+    if (subscript !== null) {
+        compound.elems[i].subscript = parseInt(subscript[0]);
+    } else compound.elems[i].subscript = 1;
+}
+
+function cancelterms() {
+    // store info for final reaction
+    finalrxn.rt1 = halfrxn[0].rt;
+    finalrxn.rt2 = halfrxn[1].rt;
+    finalrxn.pt1 = halfrxn[0].pt;
+    finalrxn.pt2 = halfrxn[1].pt;
+
+    // calculate and store side and coeff of water
+    if (halfrxn[0].water !== undefined) {
+        if (halfrxn[1].water !== undefined) {
+			// both aren't undefined, so subtract or add depending if they're on the same side or not 
+            if (halfrxn[0].water.side === halfrxn[1].water.side) {
+                finalrxn.water = new Object();
+                finalrxn.water.coeff = halfrxn[0].water.coeff + halfrxn[1].water.coeff;
+                finalrxn.water.side = halfrxn[0].water.side;
+            } else if (halfrxn[0].water.coeff !== halfrxn[1].water.coeff) {
+                finalrxn.water = new Object();
+                finalrxn.water.coeff = Math.abs(halfrxn[0].water.coeff - halfrxn[1].water.coeff);
+                if (halfrxn[0].water.side === "pt") {
+                    if (halfrxn[0].water.coeff > halfrxn[1].water.coeff) {
+                        finalrxn.water.side = "pt";
+                    } else {
+                        finalrxn.water.side = "rt";
+                    }
+                }
+            }
+        } else {
+			// one is undefined, so store the one that is defined
+            finalrxn.water = halfrxn[0].water;
+        }
+
+    } else if (halfrxn[1].water !== undefined) {
+		// one is undefined, so store the one that is defined
+        finalrxn.water = halfrxn[1].water;
+    }
+
+    // calculate and store side and coeff of hydIon (same way as water, perhaps writing a function would be better, but since it's only twice...)
+    if (halfrxn[0].hydIon !== undefined) {
+        if (halfrxn[1].hydIon !== undefined) {
+            if (halfrxn[0].hydIon.side === halfrxn[1].hydIon.side) {
+                finalrxn.hydIon = new Object();
+                finalrxn.hydIon.coeff = halfrxn[0].hydIon.coeff + halfrxn[1].hydIon.coeff;
+                finalrxn.hydIon.side = halfrxn[0].hydIon.side;
+            } else if (halfrxn[0].hydIon.coeff !== halfrxn[1].hydIon.coeff) {
+                finalrxn.hydIon = new Object();
+                finalrxn.hydIon.coeff = Math.abs(halfrxn[0].hydIon.coeff - halfrxn[1].hydIon.coeff);
+                if (halfrxn[0].hydIon.side === "pt") {
+                    if (halfrxn[0].hydIon.coeff > halfrxn[1].hydIon.coeff) {
+                        finalrxn.hydIon.side = "pt";
+                    } else {
+                        finalrxn.hydIon.side = "rt";
+                    }
+                }
+            }
+        } else {
+            finalrxn.hydIon = halfrxn[0].hydIon;
+        }
+    } else if (halfrxn[1].hydIon !== undefined) {
+        finalrxn.hydIon = halfrxn[1].hydIon;
+    }
+    return finalrxn;
+}
+
+// clears stored information
+function clearequation() {
+    reactantside = '<h2>Unbalanced Equation: </h2>';
+    productside = '';
+    $("#unbalanced").html(reactantside + productside);
+    $("#addsubstance").val('');
+    rts = [];
+    pts = [];
+    halfrxn = [new Object(), new Object()];
+    finalrxn = [];
+    rctr = 0;
+    pctr = 0;
+    hrctr = 0;
+    balanced = false;
+}
+
+// displays information for the parts of step 2
+function display(inputFunc, rxn, subs, subsDisp, inDispLoc, outDispLoc) {
+    if (inputFunc(rxn) === true) {
+        if (rxn[subs].side == "pt") {
+            $("#" + outDispLoc).html($("#" + inDispLoc).html() + " + " + dispcoeff(rxn[subs]) + subsDisp);
+        } else {
+            $("#" + outDispLoc).html(dispcoeff(rxn[subs]) + subsDisp + "+ " + $("#" + inDispLoc).html());
+        }
+    } else {
+        $("#" + outDispLoc).html($("#" + inDispLoc).html());
+    }
+}
+
+
+// calculates greatest common factor, from Nate Weiner http://blog.ideashower.com/post/15147136549/leastgreatest-common-mulitple-lcmgcm-in-php-and-javascri
+function gcf(a, b) {
+    return (b == 0) ? (a) : (gcf(b, a % b));
+}
+// calculates least common multiple
+function lcm(a, b) {
+    return (b / gcf(a, b)) * a;
+}
+
+// multiplies each half reaction by a factor of two to balance electrons for combination into final reaction
+function matchElec(rxn1, rxn2) {
+    if (rxn1.elec !== undefined && rxn2.elec !== undefined) {
+        totalElec = lcm(rxn1.elec.coeff, rxn2.elec.coeff);
+		
+        // multiply everything by appropriate factor if it exists
+        multiplycoeff(rxn1, "pt");
+        multiplycoeff(rxn1, "rt");
+        multiplycoeff(rxn1, "water");
+        multiplycoeff(rxn1, "hydIon");
+        multiplycoeff(rxn1, "elec");
+        multiplycoeff(rxn2, "pt");
+        multiplycoeff(rxn2, "rt");
+        multiplycoeff(rxn2, "water");
+        multiplycoeff(rxn2, "hydIon");
+        multiplycoeff(rxn2, "elec");
+    }
+}
+
+// multiplies coefficient only if that substance exists
+function multiplycoeff(rxn, subs) {
+    if (rxn[subs] !== undefined) {
+        rxn[subs].coeff *= (totalElec / rxn.elec.coeff);
+    }
+}
+
+// compare given element from reactants with all elements in products to check for repeats to help determine half reactions
+function ptscomp(elem) {
+    for (x = 0; x < pts.length; x++) {
+        for (y = 0; y < pts[x].elems.length; y++) {
+            if (elem.name === pts[x].elems[y].name) {
+                // stores product that matches reactant in a half reaction
+                halfrxn[hrctr].pt = pts[x];
+
+                // calculates number of molecules of element that is needed on each side
+                halfrxn[hrctr].numkey = lcm(pts[x].elems[y].subscript, elem.subscript);
+
+                // calculates coefficient of element for product
+                halfrxn[hrctr].pt.coeff = halfrxn[hrctr].numkey / (pts[x].elems[y].subscript);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+// stores product side and reactant side separately to be displayed in final steps of balancing
+function renderSides(rxn) {
+
+	// if final reaction is the reaction, left and right should include substances from both half reactions
+    if (rxn === finalrxn) {
+        left = dispcoeff(rxn.rt1) + rxn.rt1.name + " + " + dispcoeff(rxn.rt2) + rxn.rt2.name;
+        right = dispcoeff(rxn.pt1) + rxn.pt1.name + " + " + dispcoeff(rxn.pt2) + rxn.pt2.name;
+    }
+	else {
+        left = dispcoeff(rxn.rt) + rxn.rt.name;
+        right = dispcoeff(rxn.pt) + rxn.pt.name;
+    }
+	
+	// figure out which side the H2O belongs on
+    if (rxn.water !== undefined) {
+        if (rxn.water.side === "pt") {
+            right = right + " + " + dispcoeff(rxn.water) + "H2O";
+        } else {
+            left = left + " + " + dispcoeff(rxn.water) + "H2O";
+        }
+    }
+	
+	// figure out which side the hydrogen ion belongs on
+    if (rxn.hydIon !== undefined) {
+        if (rxn.hydIon.side === "pt") {
+            right = right + " + " + dispcoeff(rxn.hydIon) + "H[+]";
+        } else {
+            left = left + " + " + dispcoeff(rxn.hydIon) + "H[+]";
+        }
+    }
+	
+	// figure out which side the electrons belong on
+    if (rxn.elec !== undefined) {
+        if (rxn.elec.side === "pt") {
+            right = right + " + " + dispcoeff(rxn.elec) + "e[-]";
+        } else {
+            left = left + " + " + dispcoeff(rxn.elec) + "e[-]";
+        }
+    }
+}
+
+// split into half reactions and calculate coefficient for products
+function split() {
+    // look through all elements in reactants and all elements in products for repeats, but ignore oxygen and hydrogen
+    for (i = 0; i < rts.length; i++) {
+        if (rts[i] === halfrxn[0].rt) {
+            continue;
+        }
+        for (j = 0; j < rts[i].elems.length; j++) {
+			// 
+            if (rts[i].elems[j].name !== "H" && rts[i].elems[j].name !== "O" && hrctr < 2) {
+                // checks if element shows up on both sides, function ptscomp stores product in half reaction
+				if (ptscomp(rts[i].elems[j]) === true) {
+					// store reactant from original equation in half reaction
+                    halfrxn[hrctr].rt = rts[i];
+                    // calculates coefficient of element for reactant
+                    halfrxn[hrctr].rt.coeff = halfrxn[hrctr].numkey / (rts[i].elems[j].subscript);
+                    hrctr++;
+                }
+				// there should only be two half reactions
+                if (hrctr > 1) {
+                    break;
+                }
+            }
+        } 
+    }
+}
+
+// validate input to be only numbers and letters, cannot have a number unless preceeded by letters
+function validate(input) {
+    // checks if everything is a number or a letter or parentheses
+    return /^[()a-zA-Z0-9]+$/.test(input);
+}
+</script>
